@@ -1,0 +1,33 @@
+{
+  "name": "foodbook-api",
+  "version": "1.0.0",
+  "description": "Share your favorite food to everyone",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "foodbook"
+  ],
+  "author": "charizard-blue",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "2.4.3",
+    "body-parser": "~1.18.2",
+    "cookie-parser": "~1.4.3",
+    "cors": "2.8.4",
+    "debug": "~2.6.9",
+    "dotenv": "5.0.0",
+    "express": "^4.16.3",
+    "jsonwebtoken": "8.1.1",
+    "mongodb": "3.0.2",
+    "mongodb-stitch": "^3.0.5",
+    "mongoose": "5.0.5",
+    "mongoose-sequence": "4.0.1",
+    "morgan": "~1.9.0",
+    "serve-favicon": "~2.4.5"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.3"
+  }
+}
