@@ -20,18 +20,24 @@ const schema = new Schema({
     default: ""
   },
   address: {
-    type: String,
-    default: ""
+    street: {
+      type: String,
+      default: ""
+    },
+    city: {
+      type: String,
+      default: ""
+    }
   },
   coordinate: {
-      latitude: {
-        type: Number,
-        default: ""
-      },
-      longitude: {
-        type: Number,
-        default: ""
-      }
+    latitude: {
+      type: Number,
+      default: ""
+    },
+    longitude: {
+      type: Number,
+      default: ""
+    }
   },
   menus: [
     {
@@ -60,7 +66,8 @@ const schema = new Schema({
       }
     }
   ],
-  photos: [String]
+  photos: [String],
+  total_review: Number
 }, {timestamps: true})
 
 // GENERATED FIELDS ------------------------------------------------------------

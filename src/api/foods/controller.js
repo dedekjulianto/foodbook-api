@@ -6,7 +6,37 @@ const helpers = require("../../helpers")
 
 module.exports = {
 
-  // GET /foods/:id --------------------------------------------------------------
+  // GET /foods ----------------------------------------------------------------
+
+  get: (req, res) => {
+    let searchKey = {}
+    let short_by = ""
+    if (req.query.most_reviewed === "true") {
+      short_by = "most_reviewed"
+    }
+    if (req.query.city !== "" && req.query.city !== undefined) {
+      searchKey = {
+        "address.city": req.query.city
+      }
+    }
+
+    Food.find(searchKey).populate({path: "reviews._account"}).exec((error, resources) => {
+      if (error)
+        res.send(error)
+      resources.map((resource, index) => {
+        resource.reviews = resource.reviews.reverse()
+        resource.total_review = resource.reviews.length
+      })
+
+      if (short_by === "most_reviewed") {
+        resources = _.orderBy(resources, ["total_review"], ["desc"])
+      }
+
+      res.send({data: resources})
+    })
+  },
+
+  // GET /foods/:id ------------------------------------------------------------
 
   getById: (req, res) => {
     Food.findOne({
@@ -17,13 +47,16 @@ module.exports = {
     })
   },
 
-  // POST /foods -----------------------------------------------------------------
+  // POST /foods ---------------------------------------------------------------
 
   post: (req, res) => {
     const body = {
       _account: req.decoded.sub,
       name: req.body.name,
-      address: req.body.address,
+      address: {
+        street: req.body.street,
+        city: req.body.city
+      },
       coordinate: {
         latitude: req.body.latitude,
         longitude: req.body.longitude
@@ -49,7 +82,7 @@ module.exports = {
     })
   },
 
-  // DELETE /foods ---------------------------------------------------------------
+  // DELETE /foods -------------------------------------------------------------
 
   delete: (req, res) => {
     Food.remove({}, (error, account) => {
@@ -57,7 +90,7 @@ module.exports = {
     })
   },
 
-  // DELETE /foods/:id -----------------------------------------------------------
+  // DELETE /foods/:id ---------------------------------------------------------
 
   deleteById: (req, res) => {
     const id = req.params.id
@@ -68,7 +101,7 @@ module.exports = {
     })
   },
 
-  // PUT /foods/:id --------------------------------------------------------------
+  // PUT /foods/:id ------------------------------------------------------------
 
   putById: (req, res) => {
     const newFood = req.body
@@ -87,7 +120,7 @@ module.exports = {
     })
   },
 
-  // PUT /foods/add_review/:id ---------------------------------------------------
+  // PUT /foods/add_review/:id -------------------------------------------------
 
   addReviewById: (req, res) => {
     req.body.date = new Date()
@@ -144,7 +177,7 @@ module.exports = {
     })
   },
 
-  // GET /foods/get_food_by_user/:id ---------------------------------------------
+  // GET /foods/get_food_by_user/:id -------------------------------------------
 
   getFoodByUser: (req, res) => {
     Account.findOne({
