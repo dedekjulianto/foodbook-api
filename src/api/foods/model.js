@@ -2,7 +2,7 @@ const mongoose = require("mongoose")
 const sequence = require("mongoose-sequence")(mongoose)
 const Schema = mongoose.Schema
 
-const Account = require("../accounts/model")
+// const Account = require("../accounts/model")
 
 // PRECONFIGURATION ------------------------------------------------------------
 
@@ -11,24 +11,25 @@ const modelName = "foods"
 // SCHEMA ----------------------------------------------------------------------
 
 const schema = new Schema({
-  _account: {
-    type: Schema.Types.ObjectId,
-    ref: "Account"
-  },
+  // _account: {
+  //   type: Schema.Types.ObjectId,
+  //   ref: "Account"
+  // },
   name: {
     type: String,
     default: ""
   },
-  address: {
-    street: {
-      type: String,
-      default: ""
+  address:
+    {
+      street: {
+        type: String,
+        default: ""
+      },
+      city: {
+        type: String,
+        default: ""
+      }
     },
-    city: {
-      type: String,
-      default: ""
-    }
-  },
   coordinate: {
     latitude: {
       type: Number,
@@ -53,10 +54,10 @@ const schema = new Schema({
   ],
   reviews: [
     {
-      _account: {
-        type: Schema.Types.ObjectId,
-        ref: "Account"
-      },
+      // _account: {
+      //   type: Schema.Types.ObjectId,
+      //   ref: "Account"
+      // },
       comment: {
         type: String
       },

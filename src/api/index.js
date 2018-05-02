@@ -5,6 +5,5 @@ const controller = require("./controller")
 
 router.get("/", controller.get)
 router.get("/api", controller.get)
-router.get("/foods", controller.get)
 
 module.exports = router
