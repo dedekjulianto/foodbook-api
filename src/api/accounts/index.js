@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-
 const controller = require("./controller")
 const helpers = require("../../helpers")
 
@@ -17,3 +16,4 @@ router.get("/:id", controller.getById)
 router.post("/get_user_detail", helpers.isAuthenticated, controller.getUserDetail)
 
 module.exports = router;
+
