@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs")
 
 const Account = require("./model")
 
-const helpers = require("../../helpers")
+// const helpers = require("../../helpers")
 
 module.exports = {
   // ---------------------------------------------------------------------------
@@ -74,9 +74,12 @@ module.exports = {
   // POST /accounts/register
   register: (req, res) => {
     const body = {
-      name: req.body.name,
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
+      username: req.body.username,
       email: req.body.email,
       password: req.body.password
+
     }
 
     const newAccount = new Account(body)
