@@ -29,7 +29,7 @@ module.exports = {
       name: req.body.name,
       overview: req.body.overview,
       price: req.body.price,
-      photo: [req.body.photo],
+      photos: req.body.photos,
       address: {
         street: req.body.street,
         city: req.body.city

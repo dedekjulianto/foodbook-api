@@ -30,7 +30,7 @@ const schema = new Schema({
     type: Number,
     default: ""
   },
-  photos: [String],
+  photos: String,
   address:
     {
       street: {
