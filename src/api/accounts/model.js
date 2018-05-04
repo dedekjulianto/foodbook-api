@@ -8,7 +8,7 @@ const Schema = mongoose.Schema
 
 const modelName = "Account"
 
-const SALT_WORK_FACTOR = 8
+// const SALT_WORK_FACTOR = 8
 
 // -----------------------------------------------------------------------------
 // SCHEMA
@@ -18,48 +18,51 @@ const schema = new Schema({
   first_name: {
     type: String,
     unique: false,
-    required: true
+    default: ""
   },
   last_name: {
     type: String,
     unique: false,
-    required: true
+    default: ""
   },
   username: {
     type: String,
     unique: true,
-    required: true
+    default: ""
   },
   email: {
     type: String,
-    unique: true,
-    lowercase: true
+    unique: true
   },
-  password: String,
-  hash: String,
-  salt: String,
-  login_token: {
+  password: {
     type: String,
-    default: ""
+    unique: false
   },
-  reset_token: {
-    type: String,
-    default: ""
-  },
-  // Profile
-  bio: {
-    type: String,
-    default: ""
-  },
-  profile_picture: {
-    type: String,
-    default: "http://www.rt20.nl/wp-content/themes/rttheme15/images/no-profile.jpg"
-  },
-  login: {
-    type: Boolean,
-    unique: false,
-    default: false
-  }
+  re_password: String,
+  // hash: String,
+  // salt: String
+  // login_token: {
+  //   type: String,
+  //   default: ""
+  // },
+  // reset_token: {
+  //   type: String,
+  //   default: ""
+  // },
+  // // Profile
+  // bio: {
+  //   type: String,
+  //   default: ""
+  // },
+  // profile_picture: {
+  //   type: String,
+  //   default: "http://www.rt20.nl/wp-content/themes/rttheme15/images/no-profile.jpg"
+  // },
+  // login: {
+  //   type: Boolean,
+  //   unique: false,
+  //   default: false
+  // }
 }, {timestamps: true})
 
 // -----------------------------------------------------------------------------
@@ -77,50 +80,50 @@ schema.plugin(sequence, {
 // - PASSWORD HASH + SALT GENERATOR
 
 // BEWARE! We cannot define the same mongoose middlewares separately
-schema.pre("save", function(next) {
-  if (!this.isModified("password"))
-    return next()
-  else {
-    // Generate salt with predefined factor
-    // BEWARE! We cannot do these in synchronous way
-    bcrypt.genSalt(SALT_WORK_FACTOR, (err, salt) => {
-      if (err)
-        return next(err)
-      else {
-        // Generate hash with current plain password and salt
-        bcrypt.hash(this.password, salt, (err, hash) => {
-          if (err)
-            return next(err)
-          else {
-            // override the clear text password with the hashed one
-            this.password = hash
-            this.hash = hash
-            this.salt = salt
-            return next() // finally!
-          }
-        })
-      }
-    })
-  }
-})
+// schema.pre("save", function(next) {
+//   if (!this.isModified("password"))
+//     return next()
+//   else {
+//     // Generate salt with predefined factor
+//     // BEWARE! We cannot do these in synchronous way
+//     bcrypt.genSalt(SALT_WORK_FACTOR, (err, salt) => {
+//       if (err)
+//         return next(err)
+//       else {
+//         // Generate hash with current plain password and salt
+//         bcrypt.hash(this.password, salt, (err, hash) => {
+//           if (err)
+//             return next(err)
+//           else {
+//             // override the clear text password with the hashed one
+//             this.password = hash
+//             this.hash = hash
+//             this.salt = salt
+//             return next() // finally!
+//           }
+//         })
+//       }
+//     })
+//   }
+// })
 
 // -----------------------------------------------------------------------------
 // DATA POPULATION
 
 schema.pre("find", function(next) {
-  this.select({
-    password: 0,
-    hash: 0,
-    salt: 0,
-    login: 0,
-    login_token: 0,
-    reset_token: 0
-  })
+  // this.select({
+  //   password: 0,
+  //   hash: 0,
+  //   salt: 0,
+  //   login: 0,
+  //   login_token: 0,
+  //   reset_token: 0
+  // })
   next()
 })
 
 schema.pre("findOne", function(next) {
-  this.select({hash: 0, salt: 0})
+  // this.select({hash: 0, salt: 0})
   next()
 })
 
