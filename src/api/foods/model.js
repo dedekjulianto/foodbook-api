@@ -15,10 +15,22 @@ const schema = new Schema({
   //   type: Schema.Types.ObjectId,
   //   ref: "Account"
   // },
+  id: {
+    type: Number
+  },
   name: {
     type: String,
     default: ""
   },
+  overview: {
+    type: String,
+    default: ""
+  },
+  price: {
+    type: Number,
+    default: ""
+  },
+  photos: [String],
   address:
     {
       street: {
@@ -33,25 +45,13 @@ const schema = new Schema({
   coordinate: {
     latitude: {
       type: Number,
-      default: ""
+      default: 0
     },
     longitude: {
       type: Number,
-      default: ""
+      default: 0
     }
   },
-  menus: [
-    {
-      menu: {
-        type: String,
-        default: ""
-      },
-      price: {
-        type: Number,
-        default: ""
-      }
-    }
-  ],
   reviews: [
     {
       // _account: {
@@ -66,9 +66,7 @@ const schema = new Schema({
         enum: [1, 2, 3, 4, 5]
       }
     }
-  ],
-  photos: [String],
-  total_review: Number
+  ]
 }, {timestamps: true})
 
 // GENERATED FIELDS ------------------------------------------------------------
@@ -80,21 +78,21 @@ schema.plugin(sequence, {
 
 // DATA POPULATION -------------------------------------------------------------
 
-schema.pre("find", function(next) {
-  next()
-})
-
-schema.pre("findOne", function(next) {
-  next()
-})
-
-schema.pre("update", function() {
-  this.update({}, {
-    $set: {
-      updatedAt: new Date()
-    }
-  })
-})
+// schema.pre("find", function(next) {
+//   next()
+// })
+//
+// schema.pre("findOne", function(next) {
+//   next()
+// })
+//
+// schema.pre("update", function() {
+//   this.update({}, {
+//     $set: {
+//       updatedAt: new Date()
+//     }
+//   })
+// })
 
 // REGISTER THE SCHEMA INTO MODEL ----------------------------------------------
 

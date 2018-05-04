@@ -8,9 +8,9 @@ const logger = require("morgan");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 
-const index = require("./api")
-const accounts = require("./api/accounts")
-const foods = require("./api/foods")
+const index = require("./api");
+const foods = require("./api/foods");
+const accounts = require("./api/accounts");
 
 const mongoose = require("mongoose");
 

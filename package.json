@@ -1,17 +1,16 @@
 {
   "name": "foodbook-api",
+  "author": "charizard-blue",
   "version": "1.0.0",
   "description": "Share your favorite food to everyone",
   "main": "index.js",
   "scripts": {
-    "mon": "nodemon src/index.js",
+    "postinstall": "./setup.sh",
+    "dev": "nodemon src/index.js",
     "start": "node src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [
-    "foodbook"
-  ],
-  "author": "charizard-blue",
+  "keywords": ["foodbook"],
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "2.4.3",

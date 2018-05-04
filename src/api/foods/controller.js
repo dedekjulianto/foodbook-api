@@ -7,8 +7,8 @@ module.exports = {
 
   get: (req, res) => {
     Food.find().exec((err, resource) => {
-      res.send(resource);
-    });
+      res.send(resource)
+    })
   },
 
   // GET /foods/:id ------------------------------------------------------------
@@ -17,7 +17,6 @@ module.exports = {
     Food.findOne({
       id: Number(req.params.id)
     }).exec((err, resource) => {
-      console.log(resource);
       res.send({params: req.params, data: resource})
     })
   },
@@ -26,7 +25,11 @@ module.exports = {
 
   post: (req, res) => {
     Food.create({
+      id: req.body.id,
       name: req.body.name,
+      overview: req.body.overview,
+      price: req.body.price,
+      photo: [req.body.photo],
       address: {
         street: req.body.street,
         city: req.body.city
@@ -35,15 +38,13 @@ module.exports = {
         latitude: req.body.latitude,
         longitude: req.body.longitude
       },
-      menus:req.body.menu,
       reviews: [
         {
           // _account: req.body._account,
           comment: req.body.comment,
           rating: req.body.rating
         }
-      ],
-      photo: [req.body.photo]
+      ]
     }, (err, resource) => {
       if (err) return handleError(err);
       res.send({message: "new post has been created", data: resource});
