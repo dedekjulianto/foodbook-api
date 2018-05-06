@@ -15,14 +15,12 @@ const modelName = "Account"
 
 const schema = new Schema({
   // Internal
-  first_name: {
+  firstName: {
     type: String,
-    unique: false,
     default: ""
   },
-  last_name: {
+  lastName: {
     type: String,
-    unique: false,
     default: ""
   },
   username: {
@@ -32,15 +30,13 @@ const schema = new Schema({
   },
   email: {
     type: String,
-    unique: true
+    unique: true,
+    default: ""
   },
-  password: {
-    type: String,
-    unique: false
-  },
-  re_password: String,
-  // hash: String,
-  // salt: String
+  password: String,
+  rePassword: String,
+  hash: String,
+  salt: String
   // login_token: {
   //   type: String,
   //   default: ""

@@ -19,22 +19,8 @@ module.exports = {
         })
       })
   },
-
   // ---------------------------------------------------------------------------
-  // GET /accounts/bypass
-  getBypass: (req, res) => {
-    Account.find({})
-      // .populate({
-      //   path: "posts"
-      // })
-      .exec((err, accounts) => {
-        res.send({
-          data: accounts
-        })
-      })
-  },
 
-  // ---------------------------------------------------------------------------
   // GET /accounts/:id
   getById: (req, res) => {
     Account.findOne({id: Number(req.params.id)}, (err, account) => {
@@ -44,24 +30,25 @@ module.exports = {
       })
     })
   },
-
   // ---------------------------------------------------------------------------
-  // GET /accounts?username=yourname&email=yourname@domain.com
-  getByQuery: (req, res) => {
-    const query = {
-      username: req.params.username,
-      email: req.params.email
-    }
 
-    Account.findOne(query, (error, account) => {
-      res.send({
-        params: req.params,
-        data: account
-      })
+  // POST /accounts
+  register: (req, res) => {
+    Account.create({
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      username: req.body.username,
+      email: req.body.email,
+      password: req.body.password,
+      rePassword: req.body.rePassword
+
+    }, (err, resource) => {
+      if (err) return handleError(err);
+      res.send({message: "succes register", data: resource});
     })
   },
-
   // ---------------------------------------------------------------------------
+
   // DELETE /accounts
   delete: (req, res) => {
     Account.remove({}, (error) => {
@@ -69,23 +56,56 @@ module.exports = {
       res.status(200).send({message: "All accounts have been removed."})
     })
   },
+  // ---------------------------------------------------------------------------
+
+  // DELETE /accounts/:id
+  deleteById: (req, res) => {
+    const id = req.params.id;
+    Account.remove(
+      {
+        id: Number(id)
+      },
+      (error, resource) => {
+        res.send({
+          message: `post with id: ${id} has been delete`
+        });
+      }
+    );
+  },
+  // ---------------------------------------------------------------------------
+
+  // GET /accounts/bypass
+  // getBypass: (req, res) => {
+  //   Account.find({})
+  //     // .populate({
+  //     //   path: "posts"
+  //     // })
+  //     .exec((err, accounts) => {
+  //       res.send({
+  //         data: accounts
+  //       })
+  //     })
+  // },
+
+  // GET /accounts?username=yourname&email=yourname@domain.com
+  // getByQuery: (req, res) => {
+  //   const query = {
+  //     username: req.params.username,
+  //     email: req.params.email
+  //   }
+  //
+  //   Account.findOne(query, (error, account) => {
+  //     res.send({
+  //       params: req.params,
+  //       data: account
+  //     })
+  //   })
+  // },
 
   // ---------------------------------------------------------------------------
-  // POST /accounts/register
-  register: (req, res) => {
-    Account.create({
-      first_name: req.body.first_name,
-      last_name: req.body.last_name,
-      username: req.body.username,
-      email: req.body.email,
-      password: req.body.password,
-      re_password: req.body.re_password
 
-    }, (err, resource) => {
-      if (err) return handleError(err);
-        res.send({message: "succes register", data: resource});
-      })
-    },
+  // ---------------------------------------------------------------------------
+
 
 
 
@@ -190,18 +210,18 @@ login: (req, res) => {
   // },
   // ---------------------------------------------------------------------------
   // GET /accounts
-  // getReviewHistory: (req, res) => {
-  //
-  //   Account.find({reviews: {$elemMatch: {_account: "5a8d300c4cf01a3ee36818a1"}}})
-  //     .populate({
-  //       path: "posts"
-  //     })
-  //     .exec((err, accounts) => {
-  //       res.send({
-  //         data: accounts
-  //       })
-  //     })
-  // },
+  getReviewHistory: (req, res) => {
+
+    Account.find({reviews: {$elemMatch: {_account: "5a8d300c4cf01a3ee36818a1"}}})
+      .populate({
+        path: "posts"
+      })
+      .exec((err, accounts) => {
+        res.send({
+          data: accounts
+        })
+      })
+  },
 
   // ---------------------------------------------------------------------------
   // GET /accounts/get_user_detail

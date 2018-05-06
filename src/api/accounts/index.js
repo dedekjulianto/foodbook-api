@@ -9,11 +9,15 @@ const controller = require("./controller");
 
 router.get("/", controller.get);
 router.get("/:id", controller.getById);
+// router.get("/bypass", controller.getBypass);
+
 router.post("/", controller.register);
-router.get("/bypass", controller.getBypass);
+
+router.delete("/", controller.delete);
+router.delete("/:id", controller.deleteById);
 
 // router.get("/review_history/:id", controller.getReviewHistory)
 
-router.post("/get_user_detail", controller.getUserDetail)
+// router.post("/get_user_detail", controller.getUserDetail)
 
 module.exports = router;
