@@ -7,7 +7,7 @@ const port = normalizePort(process.env.PORT || "3030");
 app.set("port", port);
 
 http.createServer(app).listen(port, () => {
-  console.log(`App is listening on : ${port}`);
+  console.log(`Foodbook API is listening on port ${port}`);
 });
 
 // http.createServer(app).on("error", onError);
