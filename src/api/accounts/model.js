@@ -34,7 +34,6 @@ const schema = new Schema({
     default: ""
   },
   password: String,
-  rePassword: String,
   hash: String,
   salt: String
   // login_token: {

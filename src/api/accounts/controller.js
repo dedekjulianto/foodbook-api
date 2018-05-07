@@ -39,8 +39,7 @@ module.exports = {
       lastName: req.body.lastName,
       username: req.body.username,
       email: req.body.email,
-      password: req.body.password,
-      rePassword: req.body.rePassword
+      password: req.body.password
 
     }, (err, resource) => {
       if (err) return handleError(err);
