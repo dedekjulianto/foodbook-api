@@ -2,36 +2,38 @@ const Food = require("./model");
 // const Account = require("../accounts/model");
 
 module.exports = {
-
   // POST /foods ---------------------------------------------------------------
 
   post: (req, res) => {
-    Food.create({
-      // _account: req.decoded.sub,
-      name: req.body.name,
-      overview: req.body.overview,
-      price: req.body.price,
-      photos: [req.body.photos],
-      address: {
-        street: req.body.street,
-        city: req.body.city
+    Food.create(
+      {
+        // _account: req.decoded.sub,
+        name: req.body.name,
+        overview: req.body.overview,
+        price: req.body.price,
+        photos: [req.body.photos],
+        address: {
+          street: req.body.street,
+          city: req.body.city
+        },
+        coordinate:
+          {
+            latitude: req.body.latitude,
+            longitude: req.body.longitude
+          } || {},
+        reviews: [
+          {
+            // _account: req.body._account,
+            comment: req.body.comment,
+            rating: req.body.rating
+          }
+        ]
       },
-      coordinate: {
-        latitude: req.body.latitude,
-        longitude: req.body.longitude
-      } || {},
-      reviews: [
-        {
-          // _account: req.body._account,
-          comment: req.body.comment,
-          rating: req.body.rating
-        }
-      ]
-    }, (err, resource) => {
-      if (err)
-        return handleError(err);
-      res.send({message: "new post has been created", data: resource});
-    });
+      (err, resource) => {
+        if (err) return handleError(err);
+        res.send({ message: "new post has been created", data: resource });
+      }
+    );
   },
 
   // GET /foods/:id ------------------------------------------------------------
@@ -49,11 +51,12 @@ module.exports = {
         });
       }
     );
+  },
   getById: (req, res) => {
     Food.findOne({
       id: Number(req.params.id)
     }).exec((err, resource) => {
-      res.send({params: req.params, data: resource});
+      res.send({ params: req.params, data: resource });
     });
   },
 
@@ -109,18 +112,25 @@ module.exports = {
   putById: (req, res) => {
     const newFood = req.body;
     const id = req.params.id;
-    Food.findOneAndUpdate({
-      id: Number(id)
-    }, {
-      $set: newFood
-    }, {
-      new: true,
-      upsert: false
-    }, (error, resource) => {
-      if (error)
-        res.send({message: "error when updating post"});
-      res.send({message: `Foods with id: ${id} has been updated`, data: resource});
-    });
+    Food.findOneAndUpdate(
+      {
+        id: Number(id)
+      },
+      {
+        $set: newFood
+      },
+      {
+        new: true,
+        upsert: false
+      },
+      (error, resource) => {
+        if (error) res.send({ message: "error when updating post" });
+        res.send({
+          message: `Foods with id: ${id} has been updated`,
+          data: resource
+        });
+      }
+    );
   },
 
   // PUT /foods/add_review/:id -------------------------------------------------
@@ -199,7 +209,7 @@ module.exports = {
 
   delete: (req, res) => {
     Food.remove({}, (error, resource) => {
-      res.send({message: "all post has been deleted"});
+      res.send({ message: "all post has been deleted" });
     });
   },
 
@@ -207,10 +217,16 @@ module.exports = {
 
   deleteById: (req, res) => {
     const id = req.params.id;
-    Food.remove({
-      id: Number(id)
-    }, (error, resource) => {
-      res.send({message: `post with id: ${id} has been deleted`, data: resource});
-    });
+    Food.remove(
+      {
+        id: Number(id)
+      },
+      (error, resource) => {
+        res.send({
+          message: `post with id: ${id} has been deleted`,
+          data: resource
+        });
+      }
+    );
   }
 };
