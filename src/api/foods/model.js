@@ -1,12 +1,11 @@
-const mongoose = require("mongoose")
-const sequence = require("mongoose-sequence")(mongoose)
-const Schema = mongoose.Schema
-
-// const Account = require("../accounts/model")
+const mongoose = require("mongoose");
+const sequence = require("mongoose-sequence")(mongoose);
+const Schema = mongoose.Schema;
+// const Account = require("../accounts/model");
 
 // PRECONFIGURATION ------------------------------------------------------------
 
-const modelName = "foods"
+const modelName = "foods";
 
 // SCHEMA ----------------------------------------------------------------------
 
@@ -15,12 +14,8 @@ const schema = new Schema({
   //   type: Schema.Types.ObjectId,
   //   ref: "Account"
   // },
-  id: {
-    type: Number
-  },
   name: {
-    type: String,
-    default: ""
+    type: String
   },
   overview: {
     type: String,
@@ -78,21 +73,21 @@ schema.plugin(sequence, {
 
 // DATA POPULATION -------------------------------------------------------------
 
-// schema.pre("find", function(next) {
-//   next()
-// })
-//
-// schema.pre("findOne", function(next) {
-//   next()
-// })
-//
-// schema.pre("update", function() {
-//   this.update({}, {
-//     $set: {
-//       updatedAt: new Date()
-//     }
-//   })
-// })
+schema.pre("find", function(next) {
+  next()
+})
+
+schema.pre("findOne", function(next) {
+  next()
+})
+
+schema.pre("update", function() {
+  this.update({}, {
+    $set: {
+      updatedAt: new Date()
+    }
+  })
+})
 
 // REGISTER THE SCHEMA INTO MODEL ----------------------------------------------
 
