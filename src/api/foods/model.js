@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const sequence = require("mongoose-sequence")(mongoose);
 const Schema = mongoose.Schema;
-// const Account = require("../accounts/model");
+const Account = require("../accounts/model");
 
 // PRECONFIGURATION ------------------------------------------------------------
 
@@ -10,10 +10,10 @@ const modelName = "foods";
 // SCHEMA ----------------------------------------------------------------------
 
 const schema = new Schema({
-  // _account: {
-  //   type: Schema.Types.ObjectId,
-  //   ref: "Account"
-  // },
+  _account: {
+    type: Schema.Types.ObjectId,
+    ref: "Account"
+  },
   name: {
     type: String
   },
@@ -25,7 +25,7 @@ const schema = new Schema({
     type: Number,
     default: ""
   },
-  photos: String,
+  photos: [String],
   address:
     {
       street: {
@@ -49,10 +49,10 @@ const schema = new Schema({
   },
   reviews: [
     {
-      // _account: {
-      //   type: Schema.Types.ObjectId,
-      //   ref: "Account"
-      // },
+      _account: {
+        type: Schema.Types.ObjectId,
+        ref: "Account"
+      },
       comment: {
         type: String
       },
