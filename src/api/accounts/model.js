@@ -8,7 +8,7 @@ const Schema = mongoose.Schema;
 
 const modelName = "Account";
 
-// const SALT_WORK_FACTOR = 8
+const SALT_WORK_FACTOR = 8
 
 // -----------------------------------------------------------------------------
 // SCHEMA
@@ -31,17 +31,14 @@ const schema = new Schema(
       unique: true
     },
     password: String,
-    rePassword: String,
     hash: String,
-    salt: String
-    // login_token: {
-    //   type: String,
-    //   default: ""
-    // },
-    // reset_token: {
-    //   type: String,
-    //   default: ""
-    // },
+    salt: String,
+    login_token: {
+      type: String
+    },
+    reset_token: {
+      type: String
+    }
     // // Profile
     // bio: {
     //   type: String,
@@ -75,50 +72,47 @@ schema.plugin(sequence, {
 // - PASSWORD HASH + SALT GENERATOR
 
 // BEWARE! We cannot define the same mongoose middlewares separately
-// schema.pre("save", function(next) {
-//   if (!this.isModified("password"))
-//     return next()
-//   else {
-//     // Generate salt with predefined factor
-//     // BEWARE! We cannot do these in synchronous way
-//     bcrypt.genSalt(SALT_WORK_FACTOR, (err, salt) => {
-//       if (err)
-//         return next(err)
-//       else {
-//         // Generate hash with current plain password and salt
-//         bcrypt.hash(this.password, salt, (err, hash) => {
-//           if (err)
-//             return next(err)
-//           else {
-//             // override the clear text password with the hashed one
-//             this.password = hash
-//             this.hash = hash
-//             this.salt = salt
-//             return next() // finally!
-//           }
-//         })
-//       }
-//     })
-//   }
-// })
+schema.pre("save", function(next) {
+  if (!this.isModified("password")) return next();
+  else {
+    // Generate salt with predefined factor
+    // BEWARE! We cannot do these in synchronous way
+    bcrypt.genSalt(SALT_WORK_FACTOR, (err, salt) => {
+      if (err) return next(err);
+      else {
+        // Generate hash with current plain password and salt
+        bcrypt.hash(this.password, salt, (err, hash) => {
+          if (err) return next(err);
+          else {
+            // override the clear text password with the hashed one
+            this.password = hash;
+            this.hash = hash;
+            this.salt = salt;
+            return next(); // finally!
+          }
+        });
+      }
+    });
+  }
+});
 
 // -----------------------------------------------------------------------------
 // DATA POPULATION
 
 schema.pre("find", function(next) {
-  // this.select({
-  //   password: 0,
-  //   hash: 0,
-  //   salt: 0,
-  //   login: 0,
-  //   login_token: 0,
-  //   reset_token: 0
-  // })
+  this.select({
+    password: 0,
+    hash: 0,
+    salt: 0,
+    login: 0,
+    login_token: 0,
+    reset_token: 0
+  });
   next();
 });
 
 schema.pre("findOne", function(next) {
-  // this.select({hash: 0, salt: 0})
+  this.select({ hash: 0, salt: 0 });
   next();
 });
 
