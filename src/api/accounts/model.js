@@ -38,7 +38,7 @@ const schema = new Schema(
     },
     reset_token: {
       type: String
-    }
+    },
     // // Profile
     // bio: {
     //   type: String,
@@ -53,7 +53,6 @@ const schema = new Schema(
     //   unique: false,
     //   default: false
     // }
-  },
   password: String,
   hash: String,
   salt: String
@@ -79,7 +78,8 @@ const schema = new Schema(
   //   unique: false,
   //   default: false
   // }
-}, {timestamps: true})
+}, {timestamps: true}
+);
 
 // -----------------------------------------------------------------------------
 // GENERATED FIELDS
