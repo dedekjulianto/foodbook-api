@@ -32,17 +32,25 @@ module.exports = {
 
   // POST /accounts
   register: (req, res) => {
-    Account.create({
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      username: req.body.username,
-      email: req.body.email,
-      password: req.body.password
+    const payload = {
+      firstName: req.body.firstName || "",
+      lastName: req.body.lastName || "",
+      username: req.body.username || "",
+      email: req.body.email || "",
+      password: req.body.password || ""
+    };
+    console.log("payload:", payload);
 
-    }, (err, resource) => {
-      if (err) return handleError(err);
-      res.send({message: "succes register", data: resource});
-    })
+    const newAccount = new Account(payload);
+    console.log(payload.password);
+    delete payload.password;
+
+    newAccount.save(payload, (err, resource) => {
+      if (err) res.send(err);
+      else {
+        res.status(200).send({ message: "succes register", data: resource });
+      }
+    });
   },
   // ---------------------------------------------------------------------------
 
@@ -110,20 +118,20 @@ module.exports = {
     // Create body object
 
     const body = {
-      email: req.body.email,
+      username: req.body.username,
       password: req.body.password
     };
-    console.log("email:", req.body.email);
-    console.log("email:", req.body.password);
+    console.log("username:", req.body.username);
+    console.log("password:", req.body.password);
 
-    // Find one account by email
-    Account.findOne({ email: body.email })
+    // Find one account by username
+    Account.findOne({ username: body.username })
       .then(account => {
         console.log("account: ", account);
-        let validPassword = false;
-        if (body.password === account.password) {
-          validPassword = true;
-        }
+        const validPassword = bcrypt.compareSync(
+          body.password,
+          account.password
+        );
 
         console.log(validPassword);
 
@@ -133,8 +141,8 @@ module.exports = {
         if (!account) {
           // (1) If account is not found
           res.send({
-            message: `Login failed because account with email '${
-              body.email
+            message: `Login failed because account with username '${
+              body.username
             }' is not found`
           });
         } else if (!validPassword) {
@@ -155,7 +163,7 @@ module.exports = {
               iss: process.env.URL, // ISSUER: DOMAIN/URL of the service
               sub: account._id, // SUBJECT: OID/UID/UUID/GUID
               id: account.id, // ACCOUNTID: Sequential ID
-              email: account.email // EMAIL: Email address
+              username: account.username // EMAIL: Email address
             },
             secret: process.env.JWT_SECRET,
             options: {
@@ -174,7 +182,7 @@ module.exports = {
           // (7) Finally send that token
           res.send({
             message: "You are logged in",
-            email: body.email,
+            username: body.username,
             name: account.name,
             profile_picture: account.profile_picture,
             id: account.id,
