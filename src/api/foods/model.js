@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const sequence = require("mongoose-sequence")(mongoose);
 const Schema = mongoose.Schema;
-// const Account = require("../accounts/model");
+const Account = require("../accounts/model");
 
 // PRECONFIGURATION ------------------------------------------------------------
 

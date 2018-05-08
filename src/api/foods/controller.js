@@ -1,5 +1,6 @@
 const Food = require("./model");
 const Account = require("../accounts/model");
+const helpers = require("../../helpers");
 
 module.exports = {
   // POST /foods ---------------------------------------------------------------
@@ -136,29 +137,6 @@ module.exports = {
 
   // PUT /foods/add_review/:id -------------------------------------------------
 
-  // addReviewById: (req, res) => {
-  //   req.body.date = new Date()
-  //   req.body._account = req.decoded.sub
-  //   const newReview = req.body
-  //   const id = req.params.id
-  //
-  //   Food.findOneAndUpdate({
-  //     id: Number(id)
-  //   }, {
-  //     $push: {
-  //       reviews: newReview
-  //     }
-  //   }, {
-  //     new: true,
-  //     upsert: false
-  //   }, (error, resource) => {
-  //     if (error) {
-  //       res.send({message: "error when updating post"})
-  //     } else {
-  //       res.send({message: `Food with id: ${id} has been updated`, data: resource})
-  //     }
-  //   })
-  // },
   addReviewById: (req, res) => {
     req.body.date = new Date();
     req.body._account = req.decoded.sub;
