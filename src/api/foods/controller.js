@@ -1,11 +1,12 @@
 const Food = require("./model");
-// const Account = require("../accounts/model");
+const Account = require("../accounts/model");
 
 module.exports = {
   // POST /foods ---------------------------------------------------------------
 
   post: (req, res) => {
     const newFood = {
+      _account: req.decoded.sub,
       name: req.body.name || "",
       overview: req.body.overview || "",
       price: req.body.price || 0,
@@ -21,7 +22,7 @@ module.exports = {
         } || {},
       reviews: [
         {
-          // _account: req.body._account,
+          _account: req.body._account,
           comment: req.body.comment || "",
           rating: req.body.rating || ""
         }
@@ -37,8 +38,9 @@ module.exports = {
   // GET /foods ----------------------------------------------------------------
 
   get: (req, res) => {
-    Food.find().exec((err, resource) => {
-      res.send(resource);
+    Food.find().exec((error, resource) => {
+      if (error) return res.send(error);
+      res.send({ data: resource });
     });
   },
 
@@ -47,57 +49,64 @@ module.exports = {
   getById: (req, res) => {
     Food.findOne({
       id: Number(req.params.id)
-    }).exec((err, resource) => {
+    }).exec((error, resource) => {
+      if (error) return res.send(error);
       res.send({ params: req.params, data: resource });
     });
   },
 
-  // GET /foods/review_history/:id
+  // GET /foods/review_history/:id ---------------------------------------------
 
-  // getReviewHistory: (req, res) => {
-  //   Account.findOne({
-  //     id: Number(req.params.id)
-  //   }).exec((err, account) => {
-  //     if (err)
-  //       return res.send(`error while getting account ID: ${err}`)
-  //     Food.find({
-  //       reviews: {
-  //         $elemMatch: {
-  //           _account: account._id
-  //         }
-  //       }
-  //     }).populate({
-  //       path: "reviews._account",
-  //       select: {
-  //         "_id": 0,
-  //         "createdAt": 0,
-  //         "updatedAt": 0,
-  //         "email": 0
-  //       }
-  //     }).select({name: 1, address: 1, photos: 1, "reviews.comment": 1}).exec((err, foods) => {
-  //       foods.map((food, index) => {
-  //         food.reviews = food.reviews.filter(review => review._account.id === Number(req.params.id))
-  //       })
-  //       res.send({param: req.params.id, data: foods})
-  //     })
-  //   })
-  // },
+  getReviewHistory: (req, res) => {
+    Account.findOne({
+      id: Number(req.params.id)
+    }).exec((err, resource) => {
+      if (err) return res.send(`error while getting account ID: ${err}`);
+      Food.find({
+        reviews: {
+          $elemMatch: {
+            _account: resource._id
+          }
+        }
+      })
+        .populate({
+          path: "reviews._account",
+          select: {
+            _id: 0,
+            createdAt: 0,
+            updatedAt: 0,
+            email: 0
+          }
+        })
+        .select({ name: 1, address: 1, photos: 1, "reviews.comment": 1 })
+        .exec((err, foods) => {
+          foods.map((food, index) => {
+            food.reviews = food.reviews.filter(
+              review => review._account.id === Number(req.params.id)
+            );
+          });
+          res.send({ param: req.params.id, data: foods });
+        });
+    });
+  },
 
   // GET /foods/get_food_by_user/:id -------------------------------------------
 
-  // getFoodByUser: (req, res) => {
-  //   Account.findOne({
-  //     id: Number(req.params.id)
-  //   }).exec((err, account) => {
-  //     if (account._id) {
-  //       Food.find({_account: account._id}).select({name: 1, address: 1, photos: 1, id: 1}).exec((err, foods) => {
-  //         res.send({param: req.params.id, data: foods})
-  //       })
-  //     } else {
-  //       res.send({param: req.params.id, message: "account not found"})
-  //     }
-  //   })
-  // },
+  getFoodByUser: (req, res) => {
+    Account.findOne({
+      id: Number(req.params.id)
+    }).exec((err, resource) => {
+      if (resource._id) {
+        Food.find({ _account: account._id })
+          .select({ name: 1, address: 1, photos: 1, id: 1 })
+          .exec((err, foods) => {
+            res.send({ param: req.params.id, data: foods });
+          });
+      } else {
+        res.send({ param: req.params.id, message: "account not found" });
+      }
+    });
+  },
 
   // PUT /foods/:id ------------------------------------------------------------
 
@@ -150,6 +159,37 @@ module.exports = {
   //     }
   //   })
   // },
+  addReviewById: (req, res) => {
+    req.body.date = new Date();
+    req.body._account = req.decoded.sub;
+    const newReview = req.body;
+    const id = req.params.id;
+
+    Food.findOneAndUpdate(
+      {
+        id: Number(id)
+      },
+      {
+        $push: {
+          reviews: newReview
+        }
+      },
+      {
+        new: true,
+        upsert: false
+      },
+      (error, resource) => {
+        if (error) {
+          res.send({ message: "error when updating post" });
+        } else {
+          res.send({
+            message: `Food with id: ${id} has been updated`,
+            data: resource
+          });
+        }
+      }
+    );
+  },
 
   // DELETE /foods -------------------------------------------------------------
 
@@ -172,6 +212,20 @@ module.exports = {
           message: `post with id: ${id} has been deleted`,
           data: resource
         });
+      }
+    );
+  },
+
+  // GET /foods?name=gorengan
+
+  getByQuery: (req, res) => {
+    // console.log("getByQuery");
+    Food.find(
+      {
+        name: new RegExp(req.query.name, "i")
+      },
+      function(err, resource) {
+        res.send({ query: req.query, data: resource });
       }
     );
   }
