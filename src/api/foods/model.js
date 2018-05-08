@@ -11,27 +11,30 @@ const modelName = "foods";
 
 const schema = new Schema(
   {
-    // _account: {
-    //   type: Schema.Types.ObjectId,
-    //   ref: "Account"
-    // },
+    _account: {
+      type: Schema.Types.ObjectId,
+      ref: "Account"
+    },
     name: {
       type: String
     },
     overview: {
       type: String,
+      default: ""
     },
     price: {
       type: Number,
-      default: 0
+      default: ""
     },
     photos: [],
     address: {
       street: {
         type: String,
+        default: ""
       },
       city: {
         type: String,
+        default: ""
       }
     },
     coordinate: {
@@ -46,10 +49,10 @@ const schema = new Schema(
     },
     reviews: [
       {
-        // _account: {
-        //   type: Schema.Types.ObjectId,
-        //   ref: "Account"
-        // },
+        _account: {
+          type: Schema.Types.ObjectId,
+          ref: "Account"
+        },
         comment: {
           type: String
         },

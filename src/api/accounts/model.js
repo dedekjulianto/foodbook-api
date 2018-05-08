@@ -8,7 +8,7 @@ const Schema = mongoose.Schema;
 
 const modelName = "Account";
 
-const SALT_WORK_FACTOR = 8
+const SALT_WORK_FACTOR = 8;
 
 // -----------------------------------------------------------------------------
 // SCHEMA
@@ -33,6 +33,10 @@ const schema = new Schema(
     password: String,
     hash: String,
     salt: String,
+    login: {
+      type: Boolean,
+      default: false
+    },
     login_token: {
       type: String
     },
