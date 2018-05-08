@@ -165,5 +165,15 @@ module.exports = {
     }, (error, resource) => {
       res.send({message: `post with id: ${id} has been deleted`, data: resource});
     });
+  },
+
+  // GET /foods?name=gorengan
+
+  getByQuery: (req, res) => {
+    Food.find({
+      name: new RegExp('^' + req.query.name + '$', "i")
+    }, function(err, resource) {
+      res.send({query: req.query, data: resource})
+    });
   }
 };
