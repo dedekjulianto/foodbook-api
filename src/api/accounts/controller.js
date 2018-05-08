@@ -34,18 +34,21 @@ module.exports = {
 
   // POST /accounts
   register: (req, res) => {
+    const newAccount = {
+      firstName: req.body.firstName || "",
+      lastName: req.body.lastName || "",
+      username: req.body.username || "",
+      email: req.body.email || "",
+      password: req.body.password || ""
+    }
+    console.log("newAccount:", newAccount);
     Account.create(
-      {
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        username: req.body.username,
-        email: req.body.email,
-        password: req.body.password,
-        rePassword: req.body.rePassword
-      },
+      newAccount,
       (err, resource) => {
         if (err) res.status(400).json({ error: err });
-        res.status(200).send({ message: "succes register", data: resource });
+        else {
+          res.status(200).send({ message: "succes register", data: resource });
+        }
       }
     );
   },

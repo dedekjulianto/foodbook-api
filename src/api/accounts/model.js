@@ -1,65 +1,64 @@
 const bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
 const sequence = require("mongoose-sequence")(mongoose);
-const Schema = mongoose.Schema
+const Schema = mongoose.Schema;
 
 // -----------------------------------------------------------------------------
 // PRECONFIGURATION
 
-const modelName = "Account"
+const modelName = "Account";
 
 // const SALT_WORK_FACTOR = 8
 
 // -----------------------------------------------------------------------------
 // SCHEMA
 
-const schema = new Schema({
-  // Internal
-  firstName: {
-    type: String,
-    default: ""
+const schema = new Schema(
+  {
+    // Internal
+    firstName: {
+      type: String
+    },
+    lastName: {
+      type: String
+    },
+    username: {
+      type: String,
+      unique: true
+    },
+    email: {
+      type: String,
+      unique: true
+    },
+    password: String,
+    rePassword: String,
+    hash: String,
+    salt: String
+    // login_token: {
+    //   type: String,
+    //   default: ""
+    // },
+    // reset_token: {
+    //   type: String,
+    //   default: ""
+    // },
+    // // Profile
+    // bio: {
+    //   type: String,
+    //   default: ""
+    // },
+    // profile_picture: {
+    //   type: String,
+    //   default: "http://www.rt20.nl/wp-content/themes/rttheme15/images/no-profile.jpg"
+    // },
+    // login: {
+    //   type: Boolean,
+    //   unique: false,
+    //   default: false
+    // }
   },
-  lastName: {
-    type: String,
-    default: ""
-  },
-  username: {
-    type: String,
-    unique: true,
-    default: ""
-  },
-  email: {
-    type: String,
-    unique: true,
-    default: ""
-  },
-  password: String,
-  rePassword: String,
-  hash: String,
-  salt: String
-  // login_token: {
-  //   type: String,
-  //   default: ""
-  // },
-  // reset_token: {
-  //   type: String,
-  //   default: ""
-  // },
-  // // Profile
-  // bio: {
-  //   type: String,
-  //   default: ""
-  // },
-  // profile_picture: {
-  //   type: String,
-  //   default: "http://www.rt20.nl/wp-content/themes/rttheme15/images/no-profile.jpg"
-  // },
-  // login: {
-  //   type: Boolean,
-  //   unique: false,
-  //   default: false
-  // }
-}, {timestamps: true})
+  { timestamps: true }
+);
 
 // -----------------------------------------------------------------------------
 // GENERATED FIELDS
@@ -68,7 +67,7 @@ const schema = new Schema({
 schema.plugin(sequence, {
   id: "account_counter",
   inc_field: "id"
-})
+});
 
 // -----------------------------------------------------------------------------
 // MIDDLEWARES
@@ -115,24 +114,27 @@ schema.pre("find", function(next) {
   //   login_token: 0,
   //   reset_token: 0
   // })
-  next()
-})
+  next();
+});
 
 schema.pre("findOne", function(next) {
   // this.select({hash: 0, salt: 0})
-  next()
-})
+  next();
+});
 
 // Set updatedAt timestamp
 schema.pre("update", function() {
-  this.update({}, {
-    $set: {
-      updatedAt: new Date()
+  this.update(
+    {},
+    {
+      $set: {
+        updatedAt: new Date()
+      }
     }
-  })
-})
+  );
+});
 
 // -----------------------------------------------------------------------------
 // FINALLY REGISTER THE SCHEMA INTO MODEL
 
-module.exports = mongoose.model(modelName, schema)
+module.exports = mongoose.model(modelName, schema);
