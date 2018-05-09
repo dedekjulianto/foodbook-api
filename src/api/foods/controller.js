@@ -16,19 +16,7 @@ module.exports = {
         street: req.body.street || "",
         city: req.body.city || "",
         detailLocation: req.body.detailLocation || ""
-      },
-      coordinate:
-        {
-          latitude: req.body.latitude || 0,
-          longitude: req.body.longitude || 0
-        } || {},
-      reviews: [
-        {
-          _account: req.body._account,
-          comment: req.body.comment || "",
-          rating: req.body.rating || 5
-        }
-      ]
+      }
     };
     console.log(newFood);
     Food.create(newFood, (err, resource) => {
