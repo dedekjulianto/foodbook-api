@@ -20,8 +20,11 @@ module.exports = {
     };
     console.log(newFood);
     Food.create(newFood, (err, resource) => {
-      if (err) return handleError(err);
-      res.send({ message: "new post has been created", data: resource });
+      if (err) {
+        res.send(err);
+      } else {
+        res.send({ message: "new post has been created", data: resource });
+      }
     });
   },
 
