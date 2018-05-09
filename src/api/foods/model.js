@@ -19,22 +19,21 @@ const schema = new Schema(
       type: String
     },
     overview: {
-      type: String,
-      default: ""
+      type: String
     },
     price: {
-      type: Number,
-      default: ""
+      type: Number
     },
     photos: [],
     address: {
       street: {
-        type: String,
-        default: ""
+        type: String
       },
       city: {
-        type: String,
-        default: ""
+        type: String
+      },
+      detailLocation: {
+        type: String
       }
     },
     coordinate: {

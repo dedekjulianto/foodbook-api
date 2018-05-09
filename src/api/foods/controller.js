@@ -14,7 +14,8 @@ module.exports = {
       photos: [req.body.photos || ""],
       address: {
         street: req.body.street || "",
-        city: req.body.city || ""
+        city: req.body.city || "",
+        detailLocation: req.body.detailLocation || ""
       },
       coordinate:
         {
