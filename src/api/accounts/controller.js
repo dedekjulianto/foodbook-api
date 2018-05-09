@@ -135,11 +135,11 @@ module.exports = {
           body.password,
           account.password
         );
-
-        console.log(validPassword);
-
-        console.log(">>> account found:", account);
-        console.log({ validPassword });
+        //
+        // console.log(validPassword);
+        //
+        // console.log(">>> account found:", account);
+        // console.log({ validPassword });
 
         if (!account) {
           // (1) If account is not found
@@ -157,7 +157,7 @@ module.exports = {
           });
         } else {
           // (3) If the found account is matched with the password
-          console.log({ account });
+          // console.log({ account });
 
           // (4) Create token content and config
           let content = {
@@ -166,7 +166,8 @@ module.exports = {
               iss: process.env.URL, // ISSUER: DOMAIN/URL of the service
               sub: account._id, // SUBJECT: OID/UID/UUID/GUID
               id: account.id, // ACCOUNTID: Sequential ID
-              username: account.username // EMAIL: Email address
+              username: account.username, // EMAIL: Email address
+              userId: account._id //_id: ID user
             },
             secret: process.env.JWT_SECRET,
             options: {
