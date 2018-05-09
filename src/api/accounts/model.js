@@ -48,10 +48,11 @@ const schema = new Schema(
     //   type: String,
     //   default: ""
     // },
-    // profile_picture: {
-    //   type: String,
-    //   default: "http://www.rt20.nl/wp-content/themes/rttheme15/images/no-profile.jpg"
-    // },
+    profile_picture: {
+      type: String,
+      default:
+        "http://www.rt20.nl/wp-content/themes/rttheme15/images/no-profile.jpg"
+    }
     // login: {
     //   type: Boolean,
     //   unique: false,

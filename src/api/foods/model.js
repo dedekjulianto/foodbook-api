@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const sequence = require("mongoose-sequence")(mongoose);
 const Schema = mongoose.Schema;
-// const Account = require("../accounts/model");
+const Account = require("../accounts/model");
 
 // PRECONFIGURATION ------------------------------------------------------------
 
@@ -19,22 +19,21 @@ const schema = new Schema(
       type: String
     },
     overview: {
-      type: String,
-      default: ""
+      type: String
     },
     price: {
-      type: Number,
-      default: ""
+      type: Number
     },
     photos: [],
     address: {
       street: {
-        type: String,
-        default: ""
+        type: String
       },
       city: {
-        type: String,
-        default: ""
+        type: String
+      },
+      detailLocation: {
+        type: String
       }
     },
     coordinate: {

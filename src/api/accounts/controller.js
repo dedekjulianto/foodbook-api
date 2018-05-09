@@ -230,6 +230,11 @@ module.exports = {
   getUserDetail: (req, res) => {
     // res.send(req.decoded.id)
     Account.find({ id: req.decoded.id }).exec((err, accounts) => {
+      var decoded = jwt.decode(token);
+
+      // get the decoded payload and header
+      var decoded = jwt.decode(token, { complete: true });
+      console.log(decoded.id);
       res.send({
         data: accounts
       });
