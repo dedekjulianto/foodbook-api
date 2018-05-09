@@ -167,7 +167,7 @@ module.exports = {
               sub: account._id, // SUBJECT: OID/UID/UUID/GUID
               id: account.id, // ACCOUNTID: Sequential ID
               username: account.username, // EMAIL: Email address
-              userId: account._account //_id: ID user
+              userId: account._id //_id: ID user
             },
             secret: process.env.JWT_SECRET,
             options: {
@@ -190,7 +190,7 @@ module.exports = {
             name: account.name,
             profile_picture: account.profile_picture,
             id: account.id,
-            userId: account._account,
+            userId: account._id,
             token: token
           });
         }
