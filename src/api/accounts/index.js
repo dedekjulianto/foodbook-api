@@ -4,7 +4,7 @@ const router = express.Router();
 const controller = require("./controller");
 // const helpers = require("../../helpers")
 
-router.post("/login", controller.login);
+router.post("/signin", controller.login);
 // router.put("/logout", controller.logout)
 
 router.get("/", controller.get);
