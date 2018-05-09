@@ -190,6 +190,7 @@ module.exports = {
             name: account.name,
             profile_picture: account.profile_picture,
             id: account.id,
+            userId: account._id,
             token: token
           });
         }
