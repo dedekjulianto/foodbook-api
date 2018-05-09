@@ -50,38 +50,38 @@ module.exports = {
 
   // GET /foods/review_history/:id ---------------------------------------------
 
-  getReviewHistory: (req, res) => {
-    Account.findOne({
-      id: Number(req.params.id)
-    }).exec((err, resource) => {
-      if (err) return res.send(`error while getting account ID: ${err}`);
-      Food.find({
-        reviews: {
-          $elemMatch: {
-            // _account: resource._id
-          }
-        }
-      })
-        .populate({
-          path: "reviews._account",
-          select: {
-            _id: 0,
-            createdAt: 0,
-            updatedAt: 0,
-            email: 0
-          }
-        })
-        .select({ name: 1, address: 1, photos: 1, "reviews.comment": 1 })
-        .exec((err, foods) => {
-          foods.map((food, index) => {
-            food.reviews = food.reviews.filter(
-              review => review._account.id === Number(req.params.id)
-            );
-          });
-          res.send({ param: req.params.id, data: foods });
-        });
-    });
-  },
+  // getReviewHistory: (req, res) => {
+  //   Account.findOne({
+  //     id: Number(req.params.id)
+  //   }).exec((err, resource) => {
+  //     if (err) return res.send(`error while getting account ID: ${err}`);
+  //     Food.find({
+  //       reviews: {
+  //         $elemMatch: {
+  //           _account: resource._id
+  //         }
+  //       }
+  //     })
+  //       .populate({
+  //         path: "reviews._account",
+  //         select: {
+  //           _id: 0,
+  //           createdAt: 0,
+  //           updatedAt: 0,
+  //           email: 0
+  //         }
+  //       })
+  //       .select({ name: 1, address: 1, photos: 1, "reviews.comment": 1 })
+  //       .exec((err, foods) => {
+  //         foods.map((food, index) => {
+  //           food.reviews = food.reviews.filter(
+  //             review => review._account.id === Number(req.params.id)
+  //           );
+  //         });
+  //         res.send({ param: req.params.id, data: foods });
+  //       });
+  //   });
+  // },
 
   // GET /foods/get_food_by_user/:id -------------------------------------------
 
