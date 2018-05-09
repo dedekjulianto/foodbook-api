@@ -21,7 +21,10 @@ const schema = new Schema(
     overview: {
       type: String
     },
-    price: {
+    minPrice: {
+      type: Number
+    },
+    maxPrice: {
       type: Number
     },
     photos: [],
