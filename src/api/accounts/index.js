@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const controller = require("./controller");
-// const helpers = require("../../helpers")
+const helpers = require("../../helpers");
 
 router.post("/login", controller.login);
 // router.put("/logout", controller.logout)
