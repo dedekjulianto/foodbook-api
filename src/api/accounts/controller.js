@@ -37,7 +37,10 @@ module.exports = {
       lastName: req.body.lastName || "",
       username: req.body.username || "",
       email: req.body.email || "",
-      password: req.body.password || ""
+      password: req.body.password || "",
+      profile_picture:
+        req.body.profile_picture ||
+        "http://www.rt20.nl/wp-content/themes/rttheme15/images/no-profile.jpg"
     };
     console.log("payload:", payload);
 
