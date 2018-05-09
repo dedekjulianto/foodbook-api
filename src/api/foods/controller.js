@@ -26,7 +26,7 @@ module.exports = {
         {
           _account: req.body._account,
           comment: req.body.comment || "",
-          rating: req.body.rating || ""
+          rating: req.body.rating || 5
         }
       ]
     };
