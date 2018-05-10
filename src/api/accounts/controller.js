@@ -37,7 +37,10 @@ module.exports = {
       lastName: req.body.lastName || "",
       username: req.body.username || "",
       email: req.body.email || "",
-      password: req.body.password || ""
+      password: req.body.password || "",
+      profile_picture:
+        req.body.profile_picture ||
+        "http://www.rt20.nl/wp-content/themes/rttheme15/images/no-profile.jpg"
     };
     console.log("payload:", payload);
 
@@ -126,11 +129,11 @@ module.exports = {
           body.password,
           account.password
         );
-
-        console.log(validPassword);
-
-        console.log(">>> account found:", account);
-        console.log({ validPassword });
+        //
+        // console.log(validPassword);
+        //
+        // console.log(">>> account found:", account);
+        // console.log({ validPassword });
 
         if (!account) {
           // (1) If account is not found
@@ -148,7 +151,7 @@ module.exports = {
           });
         } else {
           // (3) If the found account is matched with the password
-          console.log({ account });
+          // console.log({ account });
 
           // (4) Create token content and config
           let content = {
@@ -157,7 +160,8 @@ module.exports = {
               iss: process.env.URL, // ISSUER: DOMAIN/URL of the service
               sub: account._id, // SUBJECT: OID/UID/UUID/GUID
               id: account.id, // ACCOUNTID: Sequential ID
-              username: account.username // EMAIL: Email address
+              username: account.username, // EMAIL: Email address
+              userId: account._id //_id: ID user
             },
             secret: process.env.JWT_SECRET,
             options: {
@@ -180,6 +184,7 @@ module.exports = {
             name: account.name,
             profile_picture: account.profile_picture,
             id: account.id,
+            userId: account._id,
             token: token
           });
         }

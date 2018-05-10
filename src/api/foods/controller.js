@@ -10,7 +10,8 @@ module.exports = {
       _account: req.decoded.sub,
       name: req.body.name || "",
       overview: req.body.overview || "",
-      price: req.body.price || 0,
+      minPrice: req.body.minPrice || 0,
+      maxPrice: req.body.maxPrice || 0,
       photos: [req.body.photos || ""],
       address: {
         street: req.body.street || "",
